@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="utf-8" content="width=device-width, initial-scale=1.0">
+    <title>罪名预测系统 </title>
+    <link rel="stylesheet" href="{% static 'css/mdui.min.css' %}">
+    <link href="{% static 'img/icon.png' %}" rel="SHORTCUT ICON">
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div-relative {
+            position: relative;
+        }
+
+        .background {
+            position: absolute;
+            top: 0px;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .toolbar {
+            position: absolute;
+            top: 0px;
+            z-index: 3;
+        }
+
+        /* .text-area {
+            border-radius: 16px;
+            width: 50%;
+            border:2px solid;
+            z-index: 2;
+            margin: 0 auto;
+        } */
+    </style>
+</head>
+
+<body class="mdui-theme-primary-white mdui-theme-accent-blue">
+    <div class="div-relative" id="div-relative">
+        <div class="toolbar">
+            <div class="mdui-shadow-0 mdui-color-theme mdui-appbar mdui-appbar-fixed" id="head-toolbar">
+                <div class=" mdui-toolbar" id="tool-bar">
+                    <button class="mdui-textfield-close mdui-btn mdui-btn-icon"> <i
+                            class="mdui-icon material-icons">face</i>
+                    </button>
+                    <a class="mdui-typo-headline" href="index.html">罪名预测</a>
+                    <div class="mdui-typo-title mdui-hidden-xs-down">预测结果</div>
+                    <div class="mdui-toolbar-spacer"></div>
+                    <span class="mdui-m-r-4 mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+                        mdui-tooltip="{content: '切换浅色/深色模式'}" id="change-theme-btn">
+                        <i class="mdui-icon material-icons">color_lens</i>
+                    </span>
+                    <form action="/web/logout/" method="POST">
+                        {% csrf_token %}
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
+                        mdui-tooltip="{content: '退出登录'}" id="logout-btn">退出</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="background">
+            <img src="{% static 'img/background.png' %}" width="100%" height="100%" />
+            <div style="position: absolute; z-index: 3; left:42%; top: 50%">
+                <div class="font-weight:900;  mdui-text-color-white mdui-typo">
+                    <h1>预测结果</h1>
+                </div>
+            </div>
+            <div class="mdui-typo" style="position: absolute; z-index: 3; margin:0 auto; top: 70%">
+                <blockquote>
+                    <p>其身正，不令而行；其身不正，虽令不从。</p>
+                    <footer>——《论语》</footer>
+                </blockquote>
+            </div>
+        </div>
+
+    </div>
+    <!-- 头部toolbar结束 -->
+    <div id="article">
+        
+        <div class="mdui-card mdui-center mdui-hoverable mdui-m-t-4 mdui-m-b-2"
+            style="width: 60%; border-radius:16px ;">
+            <!-- 卡片的标题和副标题 -->
+            <div class="mdui-card-primary">
+                <div class="mdui-card-primary-title">
+                        {% for accusation in accusation_list %}
+                            <p>{{ accusation }}</p>
+                        {% endfor %}
+                </div>
+                <div class="mdui-card-primary-subtitle">
+                    <i class="mdui-icon material-icons">access_time</i>
+                    {{ query_time }}
+                </div>
+            </div>
+            <!-- 卡片的内容 -->
+            <div class="mdui-card-content">{{ query_text }}</div>
+            <!-- 卡片的按钮 -->
+            <div class="mdui-card-actions" style="overflow: visible;">
+                <div class="mdui-textfield mdui-textfield-expandable mdui-float-right mdui-m-b-1 mdui-p-r-1 mdui-p-l-2">
+                    <button class="mdui-textfield-icon mdui-btn mdui-btn-icon mdui-m-l-2"><i
+                            class="mdui-icon material-icons">message</i></button>
+                    <form action="/web/results/" onsubmit="submit_click()" method="POST" target="targetIfr">
+                        {% csrf_token %}
+                        <input  name="query_id" type="text" style="display: none" value="{{ query_id }}" required/>
+                        <input  name="status" type="text" value="1" style="display: none;" required/>
+                        <input class="mdui-textfield-input" name="advice" type="text" placeholder="请输入您的建议，回车发送" required/>
+                        <button type="submit" style="display: none">
+                        </button>
+                    </form>
+                    <iframe name="targetIfr" style="display:none"></iframe>
+                    <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i
+                            class="mdui-icon material-icons">close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mdui-m-b-4">
+    </div>
+    <div class="mdui-fab-wrapper" mdui-fab="options" mdui-fab="{trigger: 'hover'}" id="indexFab">
+        <button class="mdui-fab mdui-ripple mdui-color-theme-accent">
+            <!-- 默认显示的图标 -->
+            <i class="mdui-icon material-icons">add</i>
+            <!-- 在拨号菜单开始打开时，平滑切换到该图标，若不需要切换图标，则可以省略该元素 -->
+            <i class="mdui-icon mdui-fab-opened material-icons">add</i>
+        </button>
+        <div class="mdui-fab-dial">
+
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-pink"
+                    onclick="window.location.href='/web/search/'"
+                    mdui-tooltip="{content: '预测'}"><i
+                    class="mdui-icon material-icons">search</i></button>
+
+
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red" mdui-tooltip="{content: '批量预测'}"
+                    onclick="text_file.click()"><i
+                    class="mdui-icon material-icons">insert_drive_file</i>
+                <form action="/web/batchresults/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" onchange="file_submit.click()" id="text_file"
+                           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" name="text_file"
+                           style="display: none" required/>
+                    <input name="status" type="text" value="0" style="display: none;" required/>
+
+
+                    <button id="file_submit" value="submit" style="display: none"></button>
+                </form>
+            </button>
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange"
+                    onclick="window.location.href='/web/history/'" mdui-tooltip="{content: '历史预测'}"><i
+                    class="mdui-icon material-icons">history</i></button>
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange"
+                    onclick="window.location.href='/web/case_number/'" mdui-tooltip="{content: '全国各市案件预测数量'}"><i
+                    class="mdui-icon material-icons">map</i></button>
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-blue" OnClick="logout(this, event)"
+                    mdui-tooltip="{content: '退出'}"><i
+                    class="mdui-icon material-icons">touch_app</i></button>
+        </div>
+    </div>
+
+    <script type="text/javascript" color="0,0,0" opacity='0.7' zIndex="-2" count="260" src="{% static 'js/canvas-nest.js'  %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-1.11.2.min.js'  %}"></script>
+    <script src="{% static 'js/mdui.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script type="text/javascript">
+        function submit_click() {
+            mdui.snackbar({
+                message: '我们已收到您的回复，感谢您的建议！',
+                position: 'bottom'
+            });
+        }
+    </script>
+
+</body>
+
+</html>

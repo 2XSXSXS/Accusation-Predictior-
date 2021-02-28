@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <title>罪名预测系统 </title>
+    <link rel="stylesheet" href="{% static 'css/mdui.min.css' %}">
+    <link href="{% static 'img/icon.png' %}" rel="SHORTCUT ICON">
+    <style type="text/css">
+        a {
+            text-decoration: none
+        }
+    </style>
+</head>
+
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-white mdui-theme-accent-blue"
+      id="index-body">
+<!-- 头部toolbar -->
+<header class="mdui-shadow-0 mdui-appbar mdui-appbar-fixed mdui-color-white">
+
+
+    <div class="mdui-toolbar mdui-color-theme mdui-valign">
+            <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+                  mdui-drawer="{target: '#main-drawer', swipe: true}"><i
+                    class="mdui-icon material-icons">menu</i></span>
+        <a class="mdui-typo-headline" href="index.html">罪名预测</a>
+        <div class="mdui-typo-title mdui-hidden-xs-down">首页</div>
+        <div class="mdui-toolbar-spacer"></div>
+        <div class="mdui-textfield mdui-textfield-expandable mdui-float-right" mdui-tooltip="{content: '预测'}">
+            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i
+                    class="mdui-icon material-icons">search</i></button>
+            <input class="mdui-textfield-input" type="text" placeholder="请输入犯罪事实"/>
+            <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i
+                    class="mdui-icon material-icons">close</i></button>
+        </div>
+
+        <span class="mdui-m-r-4 mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+              mdui-tooltip="{content: '切换浅色/深色模式'}" id="change-theme-btn">
+                <i class="mdui-icon material-icons">color_lens</i>
+            </span>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" mdui-tooltip="{content: '登录'}"
+                id="login-btn">登录
+        </button>
+    </div>
+    <div class="mdui-divider"></div>
+</header>
+<!-- footer分割线 -->
+<div class="mdui-content">
+    <div class="mdui-container mdui-center mdui-m-t-3">
+        <div class="mdui-panel mdui-center mdui-panel-popout" style="width:100%;" mdui-panel>
+            <div class="mdui-panel-item mdui-m-b-3 mdui-hoverable">
+                <div class="mdui-panel-item-header">
+                    <div class="mdui-panel-item-title">陕西省委全面依法治省委员会执法协调小组第一次会议召开</div>
+                    <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <div class="mdui-panel-item-body">
+                    <p>First content</p>
+                    <p>First content</p>
+                    <p>First content</p>
+                    <p>First content</p>
+                    <p>First content</p>
+                    <p>First content</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 登录dialog -->
+<div class="mdui-dialog mdui-theme-primary-bule mdui-theme-accent-blue" id="login-dialog" style="width:400px">
+    <div class="mdui-dialog-title">登录</div>
+    <div class="mdui-p-x-4">
+        <div class="mdui-container">
+            <div class="mdui-chip mdui-center" mdui-tooltip="{content: '请知悉：游客无法使用全部功能'}" style="width: 120px;">
+                <span class="mdui-chip-icon"><i class="mdui-icon material-icons">face</i></span>
+                <span class="mdui-chip-title">游客登录</span>
+            </div>
+        </div>
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">请输入注册邮箱</label>
+            <input class="mdui-textfield-input" type="email" required/>
+            <div class="mdui-textfield-error">邮箱格式错误</div>
+        </div>
+        <div class="mdui-p-b-2 mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label">请输入您的密码</label>
+            <input class="mdui-textfield-input" type="password" required/>
+        </div>
+    </div>
+    <div class="mdui-p-x-3">
+        <div class="mdui-dialog-actions" id="register-btn">
+            <div class="mdui-m-l-0 mdui-btn mdui-ripple mdui-float-left">
+                还没有账号？
+            </div>
+            <div class="mdui-btn mdui-ripple">
+                忘记密码
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mdui-divider"></div>
+    <div class="mdui-p-r-4 mdui-dialog-actions">
+        <div class="mdui-p-l-3 mdui-float-left">
+            <label class="mdui-checkbox">
+                <input type="checkbox"/>
+                <i class="mdui-checkbox-icon"></i>
+                记住登录状态
+            </label>
+        </div>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent">登录</button>
+    </div>
+</div>
+<!-- 注册dialog1 -->
+<div class="mdui-dialog mdui-theme-primary-bule mdui-theme-accent-blue" id="register-dialog-1" style="width:400px">
+    <div class="mdui-dialog-title">注册</div>
+    <div class=" mdui-dialog-content">
+        <div class="mdui-chip mdui-center mdui-p-y-0 mdui-m-y-0" mdui-tooltip="{content: '共有三步'}"
+             style="width: 120px;">
+            <span class="mdui-chip-icon"><i class="mdui-icon material-icons">sentiment_neutral</i></span>
+            <span class="mdui-chip-title">第一步</span>
+        </div>
+        <div class="mdui-p-x-2">
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">请输入邮箱</label>
+                <input class="mdui-textfield-input" type="email" required/>
+                <div class="mdui-textfield-error">邮箱格式错误</div>
+            </div>
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">请输入您的密码</label>
+                <input class="mdui-textfield-input" type="password" pattern="^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z]).*$"
+                       required/>
+                <div class="mdui-textfield-error">密码至少 6 位，且包含大小写字母</div>
+                <div class="mdui-textfield-helper">请输入至少 6 位，且包含大小写字母的密码</div>
+            </div>
+            <div class="mdui-p-b-2 mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">再次输入您的密码</label>
+                <input class="mdui-textfield-input" type="password" required/>
+            </div>
+        </div>
+        <div class="mdui-p-x-1">
+            <div class="mdui-dialog-actions">
+                <div class="mdui-btn mdui-ripple mdui-float-left" id="relogin1-btn">
+                    已经有账号？
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mdui-divider"></div>
+    <div class="mdui-p-r-4 mdui-dialog-actions">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="register1-btn">下一步</button>
+    </div>
+</div>
+<!-- 注册dialog2 -->
+<div class="mdui-dialog mdui-theme-primary-bule mdui-theme-accent-blue" id="register-dialog-2" style="width:400px">
+    <div class="mdui-dialog-title">注册</div>
+    <div class="mdui-dialog-content">
+        <div class="mdui-chip mdui-center" mdui-tooltip="{content: '完善信息'}" style="width: 120px;">
+            <span class="mdui-chip-icon"><i class="mdui-icon material-icons">sentiment_satisfied</i></span>
+            <span class="mdui-chip-title">第二步</span>
+        </div>
+        <div class="mdui-container">
+            <div class="mdui-row-xs-2">
+                <div class="mdui-col">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">姓氏</label>
+                        <input class="mdui-textfield-input" type="text" required/>
+                        <div class="mdui-textfield-error">姓氏不能为空</div>
+                    </div>
+                </div>
+                <div class="mdui-col">
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">名字</label>
+                        <input class="mdui-textfield-input" type="text" required/>
+                        <div class="mdui-textfield-error">名字不能为空</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mdui-p-x-2">
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">请输入工作单位及岗位</label>
+                <input class="mdui-textfield-input" type="text" required/>
+
+                <div class="mdui-row-xs-2 mdui-m-t-2" mdui-tooltip="{content: '请选择您的职业'}">
+
+                    <div class="mdui-col  mdui-p-l-3">
+                        <label class="mdui-radio mdui-float-left">
+                            <input type="radio" name="group1"/>
+                            <i class="mdui-radio-icon"></i>
+                            律师
+                        </label>
+                    </div>
+                    <div class="mdui-col">
+                        <label class="mdui-radio mdui-float-right">
+                            <input type="radio" name="group1"/>
+                            <i class="mdui-radio-icon"></i>
+                            司法系统人员
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mdui-p-x-1">
+            <div class="mdui-dialog-actions" id="register-btn">
+                <div class="mdui-btn mdui-ripple mdui-float-left" id="relogin2-btn">
+                    已经有账号？
+                </div>
+                <div class="mdui-btn mdui-ripple mdui-float-right" id="register-last2-btn">
+                    返回上一步
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mdui-divider"></div>
+    <div class="mdui-p-r-4 mdui-dialog-actions">
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="register2-btn">下一步</button>
+    </div>
+</div>
+<!-- 注册dialog3 -->
+<div class="mdui-dialog mdui-theme-primary-bule mdui-theme-accent-blue" id="register-dialog-3" style="width:400px">
+    <div class="mdui-dialog-title">注册</div>
+    <div class="mdui-dialog-content">
+        <div class="mdui-chip mdui-center mdui-m-b-2" mdui-tooltip="{content: '上传证件'}" style="width: 120px;">
+            <span class="mdui-chip-icon"><i class="mdui-icon material-icons">sentiment_very_satisfied</i></span>
+            <span class="mdui-chip-title">马上就好</span>
+        </div>
+        <div class="mdui-valign" style="width:150px">
+            <img class="mdui-img-fluid mdui-img-rounded" src="{% static 'img/background.png' %}"/>
+            <form>
+                <div class="mdui-center" mdui-tooltip="{content: '点击上传律师执业资格证照片'}">
+                    <button class="mdui-fab mdui-color-theme-accent mdui-ripple mdui-center">
+                        <i class="mdui-icon material-icons">add</i>
+                        <input type="file" id="file" style="opacity: 0;"
+                               accept="image/gif, image/png, image/jpg, image/jpeg">
+                    </button>
+
+                </div>
+            </form>
+        </div>
+        <div class="mdui-p-x-2">
+            <div class="mdui-dialog-actions" id="register-btn">
+                <div class="mdui-btn mdui-ripple mdui-float-left" id="relogin3-btn">
+                    已经有账号？
+                </div>
+                <div class="mdui-btn mdui-ripple mdui-float-right" id="register-last3-btn">
+                    返回上一步
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mdui-divider"></div>
+    <div class="mdui-p-r-4 mdui-dialog-actions">
+        <div class="mdui-p-l-3 mdui-float-left">
+            <label class="mdui-checkbox">
+                <input type="checkbox"/>
+                <i class="mdui-checkbox-icon"></i>
+                同意用户协议
+            </label>
+        </div>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="register3-btn">注册</button>
+    </div>
+</div>
+<!-- 侧边栏 -->
+<div class="mdui-drawer" id="main-drawer">
+    <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+        <div class="mdui-collapse-item ">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">near_me</i>
+                <div class="mdui-list-item-content">首页</div>
+            </div>
+        </div>
+        <div class="mdui-collapse-item ">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-orange">explore</i>
+                <div class="mdui-list-item-content">批量预测</div>
+            </div>
+        </div>
+        <div class="mdui-collapse-item ">
+            <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple">history</i>
+                <div class="mdui-list-item-content">历史预测</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mdui-fab-wrapper" mdui-fab="options" mdui-fab="{trigger: 'hover'}" id="indexFab">
+    <button class="mdui-fab mdui-ripple mdui-color-theme-accent">
+        <!-- 默认显示的图标 -->
+
+        <i class="mdui-icon material-icons">add</i>
+
+        <!-- 在拨号菜单开始打开时，平滑切换到该图标，若不需要切换图标，则可以省略该元素 -->
+        <i class="mdui-icon mdui-fab-opened material-icons">add</i>
+    </button>
+    <div class="mdui-fab-dial">
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-pink" mdui-tooltip="{content: '预测'}"><i
+                class="mdui-icon material-icons">search</i></button>
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red" mdui-tooltip="{content: '批量预测'}"><i
+                class="mdui-icon material-icons">insert_drive_file</i></button>
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange" mdui-tooltip="{content: '历史预测'}">><i
+                class="mdui-icon material-icons">history</i></button>
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-blue" mdui-tooltip="{content: '注销登录'}">><i
+                class="mdui-icon material-icons">transfer_within_a_station</i>
+        </button>
+    </div>
+</div>
+</div>
+
+
+<script src="{% static 'js/mdui.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

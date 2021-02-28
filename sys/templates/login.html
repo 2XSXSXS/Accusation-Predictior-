@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="utf-8" content="width=device-width, initial-scale=1.0">
+    <title>罪名预测系统 </title>
+    <link rel="stylesheet" href="{% static 'css/mdui.min.css' %}">
+
+    <link href="{% static 'img/icon.png' %}" rel="SHORTCUT ICON">
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div-relative {
+            position: relative;
+        }
+
+        .background {
+            position: absolute;
+            top: 0px;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .toolbar {
+            position: absolute;
+            top: 0px;
+            z-index: 3;
+        }
+
+        /* .text-area {
+            position: absolute;
+            top: auto;
+            background-color: white;
+            border-radius: 16px;
+            width: 60%;
+            border:2px solid;
+            z-index: 2;
+            margin: 0 auto;
+        }  */
+    </style>
+</head>
+
+<body class="mdui-bottom-nav-fixed  mdui-theme-primary-white mdui-theme-accent-blue" onload="showLogin()">
+
+<!-- 头部 -->
+<div class="mdui-shadow-0 mdui-color-white mdui-appbar mdui-appbar-fixed" id="head-toolbar" style="position: relative">
+    <div class=" mdui-toolbar" id="tool-bar">
+        <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i
+                class="mdui-icon material-icons">multiline_chart</i>
+        </button>
+        <a class="mdui-typo-headline">罪名预测</a>
+        <div class="mdui-typo-title mdui-hidden-xs-down">登录</div>
+
+        <div class="mdui-toolbar-spacer"></div>
+
+        <form action="/web/guest/" method="POST">
+            {% csrf_token %}
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
+                    id="guests-login-btn" onclick="guestclick.click()">游客登录
+            </button>
+            <input id="guestclick" style="display: none" value="submit"/>
+        </form>
+
+    </div>
+    <div class="mdui-divider"></div>
+</div>
+
+
+<!-- 登录卡片 -->
+<div id="operate1" style="position: absolute">
+    <div id="login-card">
+        <div class="mdui-container mdui-m-b-5" style="padding-top: 125px;">
+            <div class="mdui-card mdui-center mdui-shadow-3" style="width: 40%; border: 1px ; border-radius: 16px;">
+                <!-- 卡片头部 -->
+                <div class="mdui-card-primary mdui-center">
+                    <div class="mdui-card-primary-title">登录</div>
+                </div>
+                <!-- 卡片的内容 -->
+                <form method="POST" action="/web/login/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mdui-card-content mdui-p-x-3">
+
+
+                        <div class="mdui-textfield mdui-textfield-floating-label">
+
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">请输入邮箱</label>
+                                <input class="mdui-textfield-input" type="email" name="username" required/>
+                                <div class="mdui-textfield-error">邮箱格式错误</div>
+                            </div>
+
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">请输入密码</label>
+                                <input class="mdui-textfield-input" type="text" name="password"
+                                       pattern="^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z]).*$" required/>
+                                <div class="mdui-textfield-error">密码至少 6 位，且包含大小写字母</div>
+                                <div class="mdui-textfield-helper">请输入至少 6 位，且包含大小写字母的密码</div>
+                            </div>
+                        </div>
+                        <!-- 卡片的按钮 -->
+                        <label class="mdui-checkbox mdui-m-t-1">
+                            <input type="checkbox" name="remember"/>
+                            <i class="mdui-checkbox-icon"></i>
+                            记住登录
+                        </label>
+
+                    </div>
+
+
+                    <div class="mdui-card-actions mdui-m-1 mdui-m-b-1">
+                        <button
+                                class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-shadow-10 mdui-hoverable mdui-ripple mdui-center"
+                                style="width: 50px; height: 50px;" mdui-tooltip="{content: '登录'}"><i
+                                class="mdui-icon material-icons">send</i></button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
+</div>
+<!-- 注册卡片 -->
+<div id="operate2" style="position: absolute">
+
+
+    <div id="register-card">
+        <div class="mdui-container mdui-m-b-5" style="padding-top: 125px;">
+            <div class="mdui-card mdui-center mdui-shadow-3"
+                 style="width: 40%; border: 1px ; border-radius: 16px;">
+                <!-- 卡片头部 -->
+                <div class="mdui-card-primary mdui-center">
+                    <div class="mdui-card-primary-title">注册</div>
+                </div>
+                <!-- 卡片的内容 -->
+                <form method="POST" action="/web/register/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mdui-card-content mdui-p-x-3">
+                        <div class="mdui-textfield mdui-textfield-floating-label">
+
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">请输入邮箱</label>
+                                <input class="mdui-textfield-input" type="email" name="username" required/>
+                                <div class="mdui-textfield-error">邮箱格式错误</div>
+                            </div>
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">请输入您的密码</label>
+                                <input id="pwd" class="mdui-textfield-input" type="password" name="password"
+                                       pattern="^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z]).*$" required/>
+                                <div class="mdui-textfield-error">密码至少 6 位，且包含大小写字母</div>
+                                <div class="mdui-textfield-helper">请输入至少 6 位，且包含大小写字母的密码</div>
+                            </div>
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">姓名</label>
+                                <input class="mdui-textfield-input" type="text" name="first_name" required/>
+                            </div>
+
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">请输入工作单位及岗位</label>
+                                <input class="mdui-textfield-input" type="text" name="org" required/>
+                            </div>
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">律师执业资格证编号</label>
+                                <input class="mdui-textfield-input" type="text" name="certificate" required/>
+                            </div>
+                            <div class="mdui-row-xs-2 mdui-m-t-2" mdui-tooltip="{content: '请选择您的职业'}">
+
+                                <div class="mdui-col  mdui-p-l-3">
+                                    <label class="mdui-radio mdui-float-left">
+                                        <input type="radio" name="work_type" value="律师"/>
+                                        <i class="mdui-radio-icon"></i>
+                                        律师
+                                    </label>
+                                </div>
+                                <div class="mdui-col">
+                                    <label class="mdui-radio mdui-float-right">
+                                        <input type="radio" name="work_type" value="司法系统人员"/>
+                                        <i class="mdui-radio-icon"></i>
+                                        司法系统人员
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 卡片的按钮 -->
+                        <div class="mdui-row-xs-2 mdui-m-t-2">
+                            <div class="mdui-col  mdui-p-l-3">
+                                <label class="mdui-checkbox mdui-m-t-1">
+                                    <input type="checkbox" required/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    同意用户协议
+                                </label>
+                            </div>
+                            <div class="mdui-col mdui-p-r-3">
+                                <div class="mdui-float-right mdui-m-t-1">
+                                    <div class="mdui-center" mdui-tooltip="{content: '点击上传律师执业资格证照片'}">
+                                        <button class="mdui-btn mdui-color-theme-accent mdui-ripple mdui-center"
+                                                onclick="pic_file.click()" style="width: 50px">
+                                            上传证件
+                                        </button>
+                                        <input type="file" id="pic_file" name="pic_file"
+                                               style="visibility: hidden; position: absolute;"
+                                               accept="image/*" required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdui-card-actions mdui-m-1 mdui-m-b-1">
+                        <button
+                                class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-shadow-10 mdui-hoverable mdui-ripple mdui-center"
+                                style="width: 50px; height: 50px;" mdui-tooltip="{content: '注册'}" value="submit"
+                                onclick="submit_click()"><i
+                                class="mdui-icon material-icons">send</i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br><br>
+        <br>
+    </div>
+</div>
+<!-- 重置密码卡片 -->
+<div id="operate3" style="position: absolute">
+
+    <div id="forget-card">
+        <div class="mdui-container mdui-m-b-5" style="padding-top: 125px;">
+            <div class=" mdui-card mdui-center mdui-shadow-3"
+                 style="width: 40%; border: 1px ; border-radius: 16px;">
+                <!-- 卡片头部 -->
+                <div class="mdui-card-primary mdui-center">
+                    <div class="mdui-card-primary-title">重置密码</div>
+                </div>
+                <form action="/web/forget/" method="POST">
+                    <!-- 卡片的内容 -->
+                    {% csrf_token %}
+                    <div class="mdui-card-content mdui-p-x-3">
+                        <div class="mdui-textfield mdui-textfield-floating-label">
+
+                            <div class="mdui-textfield mdui-textfield-floating-label">
+                                <label class="mdui-textfield-label">请输入邮箱</label>
+                                <input class="mdui-textfield-input" name="email" type="email" required/>
+                                <div class="mdui-textfield-error">邮箱格式错误</div>
+                            </div>
+                        </div>
+                        <!-- 卡片的按钮 -->
+                    </div>
+                <div class="mdui-card-actions mdui-m-1 mdui-m-b-1">
+                    <button
+                            class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-shadow-10 mdui-hoverable mdui-ripple mdui-center"
+                            style="width: 50px; height: 50px;" mdui-tooltip="{content: '发送'}" value="submit"><i
+                            class="mdui-icon material-icons" onclick="submit_click()">send</i></button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
+</div>
+<!-- 底部导航栏 -->
+<div class="mdui-bottom-nav mdui-bottom-nav-text-auto mdui-shadow-24 mdui-color-white mdui-m-b-3"
+     style="border-radius:16px; width:50%; height: auto;">
+    <a href="javascript:;" onclick="showLogin()" class="mdui-ripple mdui-bottom-nav-active">
+        <i class="mdui-icon material-icons">sentiment_satisfied</i>
+        <label>登录</label>
+    </a>
+    <a href="javascript:;" onclick="showRegister()" class="mdui-ripple">
+        <i class="mdui-icon material-icons">library_books</i>
+        <label>注册</label>
+    </a>
+    <a href="javascript:;" onclick="showForget()" class="mdui-ripple">
+        <i class="mdui-icon material-icons">help_outline</i>
+        <label>忘记密码？</label>
+    </a>
+</div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<script type="text/javascript" src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
+<script src="{% static 'js/mdui.min.js' %}"></script>
+<script src="{% static 'js/login.js' %}"></script>
+
+<script type="text/javascript">
+    function submit_click() {
+        mdui.snackbar({
+            message: '请前往邮箱进行确认！',
+            position: 'bottom'
+        });
+    }
+</script>
+
+
+</body>
+
+</html>

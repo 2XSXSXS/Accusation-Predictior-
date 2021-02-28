@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="utf-8" content="width=device-width, initial-scale=1.0">
+    <title>罪名预测系统 </title>
+    <link rel="stylesheet" href="{% static 'css/mdui.min.css' %}">
+    <link href="{% static 'img/icon.png' %}" rel="SHORTCUT ICON">
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/default.css' %}"/>
+    <!--必要样式-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/search-form.css' %}"/>
+
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .div-relative {
+            position: relative;
+        }
+
+        .background {
+            position: absolute;
+            top: 0px;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .toolbar {
+            position: absolute;
+            top: 0px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<!-- mdui-appbar-with-toolbar -->
+
+<body class="mdui-theme-primary-white mdui-theme-accent-blue">
+<div class="div-relative" id="div-relative">
+    <div class="toolbar">
+        <div class="mdui-shadow-0 mdui-color-theme mdui-appbar mdui-appbar-fixed" id="head-toolbar">
+            <div class=" mdui-toolbar" id="tool-bar">
+                <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i
+                        class="mdui-icon material-icons">face</i>
+                </button>
+                <a class="mdui-typo-headline" href="#">罪名预测</a>
+                <div class="mdui-typo-title mdui-hidden-xs-down">访客模式</div>
+                <div class="mdui-toolbar-spacer"></div>
+                <span class="mdui-m-r-4 mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+                      mdui-tooltip="{content: '切换浅色/深色模式'}" id="change-theme-btn">
+                        <i class="mdui-icon material-icons">color_lens</i>
+                    </span>
+                <form action="/web/logout/" method="POST">
+                    {% csrf_token %}
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="window.location.href='/web/login/'"
+                            mdui-tooltip="{content: '退出访客模式'}" id="logout-btn">退出
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="background">
+        <img src={% static 'img/background.png' %} width="100%" height="100%"/>
+        <div style="position: absolute; z-index: 3; left:38%; top: 50%">
+            <div class="font-weight:900;  mdui-text-color-white mdui-typo">
+                <h1>点击按钮开始预测</h1>
+            </div>
+        </div>
+        {#            onSubmit="submitFn(this, event);"#}
+        <form action="/web/results/" method="POST" style="position: absolute; z-index: 3; left:47%; bottom:10%">
+            {% csrf_token %}
+            <div id="search-div" class="search-wrapper">
+                <div class="input-holder">
+                    <input name="status" type="text" value="0" style="display: none;" required/>
+                    <input type="text" class="search-input" name="query" placeholder="请输入犯罪事实" required/>
+                    <button class="search-icon" id="search-btn" onClick="searchToggle(this, event);"><span></span>
+                    </button>
+                </div>
+                <span class="close" onClick="searchToggle(this, event);"></span>
+                <div class="result-container">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 头部toolbar结束 -->
+<div id="article">
+
+    <div class="mdui-container mdui-m-t-5">
+        <div class="mdui-row-xs-3">
+            <div class="mdui-col">
+                <div class="mdui-card mdui-hoverable mdui-ripple">
+                    <div class="mdui-card-media">
+                        <img src={% static 'img/accuracy.jpg' %}/>
+                        <div class="mdui-card-media-covered">
+                            <div class="mdui-card-primary">
+                                <div class="mdui-card-primary-title">准确</div>
+                                <div class="mdui-card-primary-subtitle">机器学习加持的预测系统</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-col">
+                <div class="mdui-card mdui-hoverable mdui-ripple">
+                    <div class="mdui-card-media">
+                        <img src={% static 'img/professional.jpg' %}/>
+                        <div class="mdui-card-media-covered">
+                            <div class="mdui-card-primary">
+                                <div class="mdui-card-primary-title">专业</div>
+                                <div class="mdui-card-primary-subtitle">数据取自真实司法判决文书</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-col">
+                <div class="mdui-card mdui-hoverable mdui-ripple">
+                    <div class="mdui-card-media">
+                        <img src={% static 'img/support.jpg' %}/>
+                        <div class="mdui-card-media-covered">
+                            <div class="mdui-card-primary">
+                                <div class="mdui-card-primary-title">长期支持</div>
+                                <div class="mdui-card-primary-subtitle">本项目持续更新迭代</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" color="0,0,0" opacity='0.7' zIndex="-2" count="260"
+        src="{% static 'js/canvas-nest.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
+<script src="{% static 'js/mdui.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+
+</body>
+
+</html>
