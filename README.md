@@ -1,5 +1,5 @@
 # Accusation-Predictior
-### 模型部分：使用TensorFolw，基于TextCNN模型训练，实质上是文本分类。
+### 模型部分：使用TensorFolw，基于TextCNN模型训练。
 ### 展示系统：前端使用MDUI框架和JQuery，提供非线性动画和接近Material Design的设计理念。后端使用Django框架，MySQL作为数据库，前后端分离。
 
 ----
